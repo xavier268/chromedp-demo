@@ -33,11 +33,11 @@ func main() {
 		chromedp.UserDataDir(dir),
 	}
 
-	// Create amllocator context
+	// Create allocator context
 	ctx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
 	defer cancel()
 
-	// Use allocator to get a browser context (MANDATORY - you cannot use an allocator ctx directly )
+	// Use allocator to get a browser context (MANDATORY - you cannot USE an allocator ctx directly )
 	ctx, cancel = chromedp.NewContext(ctx)
 	defer cancel()
 
@@ -51,7 +51,7 @@ func main() {
 		panic(err)
 	}
 
-	// Actual processing starts here
+	// Actual processing done here
 
 	getSelectedHeadlines(ctx)
 	getAllHeadlines(ctx)
