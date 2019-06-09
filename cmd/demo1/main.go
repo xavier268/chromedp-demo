@@ -18,23 +18,8 @@ const (
 
 func main() {
 
-	dir, err := ioutil.TempDir("", "xavier-chromedp-demo")
-	if err != nil {
-		panic(err)
-	}
-	defer os.RemoveAll(dir)
-
-	opts := []chromedp.ExecAllocatorOption{
-		chromedp.NoFirstRun,
-		chromedp.NoDefaultBrowserCheck,
-		//chromedp.Headless,			  // Operate in headless mode
-		chromedp.Flag("headless", false), // Display what's going on ...
-		chromedp.DisableGPU,
-		chromedp.UserDataDir(dir),
-	}
-
-	// Create allocator context
-	ctx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
+	// Get a default (visible) allocator
+	ctx, cancel := getVisibleAllocator()
 	defer cancel()
 
 	// Use allocator to get a browser context (MANDATORY - you cannot USE an allocator ctx directly )
@@ -47,17 +32,43 @@ func main() {
 	defer cancel()
 
 	// ensure that the browser process is started
-	if err := chromedp.Run(ctx); err != nil {
-		panic(err)
-	}
+	checkBrowserStarted(ctx)
 
 	// Actual processing done here
 
-	getSelectedHeadlines(ctx)
+	//getSelectedHeadlines(ctx)
 	getAllHeadlines(ctx)
 }
 
-func checkBroserStarted(ctx context.Context) {
+// Provides an allocator with default option, that opens a visible browser
+// cookies etc are shared in a common dir that gets erased at the end
+func getVisibleAllocator() (context.Context, context.CancelFunc) {
+	dir, err := ioutil.TempDir("", "xavier-chromedp-demo")
+	if err != nil {
+		panic(err)
+	}
+
+	opts := []chromedp.ExecAllocatorOption{
+		chromedp.NoFirstRun,
+		chromedp.NoDefaultBrowserCheck,
+		//chromedp.Headless,			  // Operate in headless mode
+		chromedp.Flag("headless", false), // Display what's going on ...
+		chromedp.DisableGPU,
+		chromedp.UserDataDir(dir),
+	}
+
+	// Create allocator context
+	ctx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
+
+	cancel2 := func() {
+		cancel()
+		os.RemoveAll(dir)
+	}
+
+	return ctx, cancel2
+}
+
+func checkBrowserStarted(ctx context.Context) {
 	// ensure that the browser process is started
 	if err := chromedp.Run(ctx); err != nil {
 		panic(err)
@@ -97,7 +108,7 @@ func getAllHeadlines(ctx context.Context) {
 	var lnodes []*cdp.Node
 	err := chromedp.Run(ctx,
 		chromedp.Navigate(myurl),
-		chromedp.Nodes("//div[15]//h4/a", &lnodes),
+		chromedp.Nodes("//div//h4/a", &lnodes),
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -111,6 +122,7 @@ func getAllHeadlines(ctx context.Context) {
 		fmt.Println("nodename \t", lnodes[i].NodeName)
 		fmt.Println()
 	}
+	fmt.Println("Done - getAllHeadlines")
 
 }
 
