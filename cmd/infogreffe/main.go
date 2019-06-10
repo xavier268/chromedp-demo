@@ -21,8 +21,13 @@ func main() {
 		return
 	}
 
-	Login(ctx)
+	if err := Login(ctx); err != nil {
+		fmt.Println("Error trying to login ?", err)
+		return
+	}
 
 	//debugging
-	time.Sleep(time.Duration(10) * time.Second)
+	fmt.Println("Finished, waiting a little bit for debugging ...")
+	time.Sleep(time.Duration(100) * time.Second)
+	fmt.Println("Done.")
 }

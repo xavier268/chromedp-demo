@@ -32,7 +32,7 @@ func init() {
 
 	flag.StringVar(&cliParam.url, "url", "http://juges.infogreffe.fr", "change default url")
 
-	flag.IntVar(&cliParam.minutes, "minutes", 1, "Time out in minutes")
+	flag.IntVar(&cliParam.minutes, "minutes", 1, "Global timeout in minutes")
 
 	flag.BoolVar(&cliParam.reset, "reset", true, "clear after processing")
 
