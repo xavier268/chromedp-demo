@@ -24,5 +24,5 @@ func main() {
 	Login(ctx)
 
 	//debugging
-	time.Sleep(time.Duration(3) * time.Minute)
+	time.Sleep(time.Duration(10) * time.Second)
 }
