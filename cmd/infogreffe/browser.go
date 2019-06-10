@@ -14,7 +14,7 @@ import (
 func getBrowserCtx() (context.Context, context.CancelFunc) {
 
 	if !flag.Parsed() {
-		panic("Calling getBrowser befaore parsing of cli params are available ?!")
+		panic("Calling getBrowser before parsing of cli params are available ?!")
 	}
 
 	dir, err := ioutil.TempDir("", "zz-infogreffe")
@@ -32,7 +32,9 @@ func getBrowserCtx() (context.Context, context.CancelFunc) {
 
 	// Create allocator context
 	ctx, cancel1 := chromedp.NewExecAllocator(context.Background(), opts...)
+	// Create browser context
 	ctx, cancel2 := chromedp.NewContext(ctx)
+	// Set  global timeout
 	ctx, cancel3 := context.WithTimeout(ctx, time.Duration(cliParam.minutes)*time.Minute)
 
 	cancelAll := func() {

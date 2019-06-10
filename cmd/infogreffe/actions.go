@@ -73,12 +73,13 @@ func RequestMails(ctx context.Context, role string) error {
 	}
 
 	err := chromedp.Run(c,
-		chromedp.Navigate("/infogreffe/selectRechercheAffaireAction.do?search=0"),
+		chromedp.Navigate("http://www2.infogreffe.fr/infogreffe/selectRechercheAffaireAction.do?search=0"),
 		chromedp.WaitVisible(selRole),
 		chromedp.SendKeys(selRole, role),
 		chromedp.Submit(selRole),
 		chromedp.WaitNotPresent(selRole),
-		chromedp.Navigate("/infogreffe/listeAffaireDocsNumerises.do?indiceaff=0"),
+
+		//chromedp.Navigate("http://www2.infogreffe.fr/infogreffe/listeAffaireDocsNumerises.do?indiceaff=0"),
 	)
 	if err != nil {
 		fmt.Println(err)

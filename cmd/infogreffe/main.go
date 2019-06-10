@@ -26,6 +26,11 @@ func main() {
 		return
 	}
 
+	if err := RequestMails(ctx, "2019F00260"); err != nil {
+		fmt.Println("Error trying to retirve mails ?", err)
+		return
+	}
+
 	//debugging
 	fmt.Println("Finished, waiting a little bit for debugging ...")
 	time.Sleep(time.Duration(100) * time.Second)
