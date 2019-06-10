@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/chromedp/chromedp"
 )
@@ -22,4 +23,6 @@ func main() {
 
 	Login(ctx)
 
+	//debugging
+	time.Sleep(time.Duration(3) * time.Minute)
 }

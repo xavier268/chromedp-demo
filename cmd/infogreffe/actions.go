@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/chromedp/chromedp"
 )
@@ -27,6 +26,5 @@ func Login(ctx context.Context) {
 		chromedp.WaitNotPresent(selForm),
 	)
 	fmt.Println("Authenticated as ", cliParam.user)
-	time.Sleep(time.Duration(cliParam.minutes) * time.Minute)
 
 }
