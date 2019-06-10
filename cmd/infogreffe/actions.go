@@ -26,7 +26,7 @@ func Login(ctx context.Context) {
 		chromedp.Click(selValider),
 		chromedp.WaitNotPresent(selForm),
 	)
-	fmt.Println("AUthenticated as ", cliParam.user)
+	fmt.Println("Authenticated as ", cliParam.user)
 	time.Sleep(time.Duration(cliParam.minutes) * time.Minute)
 
 }
